@@ -1,4 +1,4 @@
-package ta.putri.prodouct_barcode
+package ta.putri.prodouct_barcode.utlis
 
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
@@ -15,7 +15,8 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "pondok_kr
         @Synchronized
         fun getInstance(ctx: Context): DatabaseOpenHelper {
             if (instance == null) {
-                instance = DatabaseOpenHelper(ctx.applicationContext)
+                instance =
+                    DatabaseOpenHelper(ctx.applicationContext)
             }
             return instance as DatabaseOpenHelper
         }
@@ -28,7 +29,7 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "pondok_kr
             true,
             UserModel.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
             UserModel.USER_NAME to TEXT + NOT_NULL,
-            UserModel.USER_EMAIL to TEXT + NOT_NULL,
+            UserModel.USER_EMAIL to TEXT + NOT_NULL + UNIQUE,
             UserModel.USER_PASSWORD to TEXT + NOT_NULL,
             UserModel.TGL_DAFTAR to TEXT + NOT_NULL
         )
@@ -43,7 +44,6 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "pondok_kr
             TransactionModel.HARGA_PER_BARANG to TEXT,
             TransactionModel.TANGGAL to TEXT,
             TransactionModel.TOTAL_HARGA to TEXT
-
         )
     }
 

@@ -5,7 +5,12 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.view.LayoutInflater
 import android.view.Window
+import kotlinx.android.synthetic.main.add_product_layout.*
 import kotlinx.android.synthetic.main.add_product_layout.view.*
+import kotlinx.android.synthetic.main.add_product_layout.view.btn_cancel
+import kotlinx.android.synthetic.main.add_product_layout.view.jumlah_barang
+import kotlinx.android.synthetic.main.add_product_layout.view.nama_barang
+import kotlinx.android.synthetic.main.dialog_payment_layout.view.*
 import ta.putri.prodouct_barcode.R
 
 class DialogView(private var activity: Activity) {
@@ -29,27 +34,78 @@ class DialogView(private var activity: Activity) {
         status = false
     }
 
-    fun showConfirmationDialog(namaBarang : String, hargaBarang : String, eventConfirmation: ButtonEventConfirmationDialogListener) {
+    fun showAddProductDialog(
+        namaBarang: String,
+        hargaBarang: String,
+        jumlah: String,
+        eventConfirmation: ButtonEventConfirmationDialogListener
+    ) {
 
         val factory = LayoutInflater.from(activity)
-        val exitDialogView = factory.inflate(R.layout.add_product_layout, null)
-        val exitDialog = AlertDialog.Builder(activity).create()
+        val addProductDialogView = factory.inflate(R.layout.add_product_layout, null)
+        val addProductDialog = AlertDialog.Builder(activity).create()
 
-        exitDialogView.nama_barang.text = namaBarang
-        exitDialogView.harga_barang.text = hargaBarang
+        addProductDialogView.nama_barang.text = namaBarang
+        addProductDialogView.harga_barang.text = hargaBarang
+        addProductDialogView.jumlah_barang.setText(jumlah)
 
-        exitDialogView.btn_save.setOnClickListener {
-            eventConfirmation.onClickYa()
-            exitDialog.dismiss()
+
+        var jumlahBarang = 0
+
+        addProductDialogView.btn_minus.setOnClickListener {
+            jumlahBarang--
+            if (jumlahBarang <= 0) {
+                addProductDialogView.jumlah_barang.setText(1.toString())
+            } else {
+                addProductDialogView.jumlah_barang.setText(jumlahBarang.toString())
+            }
+
         }
 
-        exitDialogView.btn_cancel.setOnClickListener {
+        addProductDialogView.btn_plus.setOnClickListener {
+            jumlahBarang++
+            addProductDialogView.jumlah_barang.setText(jumlahBarang.toString())
+        }
+
+
+        addProductDialog.setCanceledOnTouchOutside(false)
+
+
+        addProductDialogView.btn_save.setOnClickListener {
+            eventConfirmation.onClickYa(addProductDialog.jumlah_barang.text.toString().toInt())
+            addProductDialog.dismiss()
+        }
+
+        addProductDialogView.btn_cancel.setOnClickListener {
             eventConfirmation.onClickTidak()
-            exitDialog.dismiss()
+            addProductDialog.dismiss()
         }
 
-        exitDialog.setView(exitDialogView)
-        exitDialog.show()
+        addProductDialog.setView(addProductDialogView)
+        addProductDialog.show()
+    }
 
+    fun showDialogOnPayment(totalHarga : String, saldoCustomer : String, saldoAkhir : String, event: ButtonEventPaymentDialog){
+
+        val factory = LayoutInflater.from(activity)
+        val paymentDialogView = factory.inflate(R.layout.add_product_layout, null)
+        val paymentDialog = AlertDialog.Builder(activity).create()
+
+        paymentDialogView.txt_old_saldo.text = saldoCustomer
+        paymentDialogView.txt_new_saldo.text = saldoAkhir
+        paymentDialogView.txt_total_harga.text = totalHarga
+
+        paymentDialogView.btn_paid.setOnClickListener {
+            event.onClickYa()
+            paymentDialog.dismiss()
+        }
+
+        paymentDialogView.btn_cancel.setOnClickListener {
+            event.onClickTidak()
+            paymentDialog.dismiss()
+        }
+
+        paymentDialog.setView(paymentDialogView)
+        paymentDialog.show()
     }
 }

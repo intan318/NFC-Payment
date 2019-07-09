@@ -1,19 +1,17 @@
 package ta.putri.prodouct_barcode.login
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_login.*
-import kotlinx.android.synthetic.main.activity_register.*
-import kotlinx.android.synthetic.main.activity_register.btn_daftar
-import kotlinx.android.synthetic.main.activity_register.edt_email
-import kotlinx.android.synthetic.main.activity_register.edt_password
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.toast
-import ta.putri.prodouct_barcode.MainActivity
+import org.jetbrains.anko.*
+import ta.putri.prodouct_barcode.customer.MainActivity
 import ta.putri.prodouct_barcode.R
 import ta.putri.prodouct_barcode.model.CurrentUser
+import ta.putri.prodouct_barcode.model.LoginRespons
 import ta.putri.prodouct_barcode.register.RegisterActivity
+import ta.putri.prodouct_barcode.utlis.DialogView
 import ta.putri.prodouct_barcode.utlis.SessionManager
 
 class LoginActivity : AppCompatActivity(), LoginView {
@@ -21,6 +19,9 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     private lateinit var loginPresenter: LoginPresenter
     private lateinit var session: SessionManager
+
+    private lateinit var dialogView: DialogView
+    private lateinit var dialogAlert: DialogInterface
 
     private var succes = false
     private var message = ""
@@ -32,6 +33,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         session = SessionManager(this)
         loginPresenter = LoginPresenter(this, this)
+        dialogView  = DialogView(this)
 
         when {
             session.isLoggedIn -> {
@@ -62,24 +64,46 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
             if (email != "" && pass != "") {
                 loginPresenter.login(email, pass)
-                if (succes) {
-                    session.setLogin(true, user_id)
-                    startActivity(intentFor<MainActivity>())
-                } else {
-                    toast(message)
-                }
             } else {
                 toast("Harap di isi semua !")
             }
         }
     }
 
-    override fun onLoading() {
-    }
-    override fun onFinish() {
+    private fun onLogin(){
+        session.setLogin(true, user_id)
+        startActivity(intentFor<MainActivity>())
     }
 
-    override fun getResponses(pesan: String, status: Boolean, id: String) {
-        user_id = id
+    override fun onLoading() {
+        dialogView.showProgressDialog()
+    }
+
+    override fun onFinish() {
+        dialogView.hideProgressDialog()
+        if (succes) {
+            onLogin()
+        }
+    }
+
+    override fun getResponses(respon: LoginRespons?) {
+
+        if (respon?.error!!) {
+
+            dialogAlert =
+                alert(
+                    message = respon.message.toString(),
+                    title = "Login gagal"
+                ) {
+                    okButton {
+                        dialogAlert.dismiss()
+                    }
+                }.show()
+
+        } else {
+            user_id = respon.id!!
+            succes = !respon.error!!
+        }
+
     }
 }

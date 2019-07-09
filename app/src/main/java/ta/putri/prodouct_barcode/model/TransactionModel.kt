@@ -6,6 +6,7 @@ class TransactionModel(
     val nama_per_barang: String? = null,
     val jumlah_per_barang: String? = null,
     val harga_per_barang : String? = null,
+    val subtotal_per_barang : String? = null,
     val tanggal : String?= null,
     val total_harga : String? = null
 ){

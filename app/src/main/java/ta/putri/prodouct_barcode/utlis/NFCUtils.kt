@@ -31,10 +31,12 @@ object NFCUtils {
 
     fun retrieveNFCMessage(intent: Intent?): String {
         intent?.let {
-            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action) {
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action || NfcAdapter.ACTION_TECH_DISCOVERED == intent.action
+                || NfcAdapter.ACTION_NDEF_DISCOVERED == intent.action
+            ) {
                 val nDefMessages = getNDefMessages(intent)
                 nDefMessages[0].records?.let { it ->
-                    it.forEach {
+                    it.forEach { it ->
                         it?.payload.let {
                             it?.let {
                                 return String(it)

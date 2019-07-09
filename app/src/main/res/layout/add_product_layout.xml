@@ -6,74 +6,147 @@
         android:layout_width="match_parent" android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.LinearLayoutCompat
+            android:gravity="center"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <TableLayout
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:id="@+id/nama_barang"
+                android:text="Nama Barang"
+                android:padding="5dp"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:gravity="center"
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <TableRow android:layout_margin="16dp">
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:layout_weight="1"
-                        android:layout_column="1"
-                        android:text="Nama Barang"
-                        android:padding="5dp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:textStyle="bold"
-                        android:textSize="14sp"
-                        android:layout_weight="1"
-                        android:layout_column="1"
-                        android:text="Harga Barang"
-                        android:padding="5dp"/>
-            </TableRow>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:text="Rp."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
 
-            <TableRow android:layout_margin="16dp">
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:textSize="14sp"
-                        android:id="@+id/nama_barang"
-                        android:layout_weight="1"
-                        android:layout_column="1"
-                        android:text="Nama Barang"
-                        android:padding="5dp"/>
-                <androidx.appcompat.widget.AppCompatTextView
-                        android:textSize="14sp"
-                        android:id="@+id/harga_barang"
-                        android:layout_weight="1"
-                        android:layout_column="1"
-                        android:text="Harga Barang"
-                        android:padding="5dp"/>
-            </TableRow>
-        </TableLayout>
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:id="@+id/harga_barang"
+                    android:text="Harga Barang"
+                    android:padding="5dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:text=" / pcs"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_gravity="center"
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stock Barang  ="
+                    android:padding="5dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="#000"
+                    android:textSize="15sp"
+                    android:id="@+id/txt_stock"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Stock"
+                    android:padding="5dp"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.AppCompatTextView
+                android:textColor="#000"
+                android:textSize="15sp"
                 android:layout_marginTop="20dp"
                 android:layout_gravity="center"
-                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Jumlah barang"
                 android:padding="5dp"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-                android:layout_margin="20dp"
-                android:layout_gravity="center"
-                style="@style/LoginTextInputLayoutStyle"
-                android:layout_width="wrap_content"
+
+        <RelativeLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <com.google.android.material.textfield.TextInputEditText
-                    android:textAlignment="center"
-                    android:text="1"
-                    android:id="@+id/jumlah_barang"
-                    android:inputType="number"
-                    android:layout_width="100dp"
+            <androidx.appcompat.widget.AppCompatImageButton
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_minus"
+                    android:layout_marginStart="50dp"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/btn_minus"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                    android:gravity="center"
+                    android:layout_toStartOf="@id/btn_plus"
+                    android:layout_toEndOf="@id/btn_minus"
+                    android:layout_centerVertical="true"
+                    android:id="@+id/input_jumlah"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_gravity="center"
+                    style="@style/LoginTextInputLayoutStyle"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                        android:textColor="#000"
+                        android:textSize="15sp"
+                        android:textAlignment="center"
+                        android:text="1"
+                        android:id="@+id/jumlah_barang"
+                        android:inputType="number"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"/>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_plus"
+                    android:layout_marginEnd="50dp"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/btn_plus"
+                    android:layout_centerVertical="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_margin="16dp"
@@ -83,6 +156,8 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatButton
+                    android:textColor="#000"
+                    android:textSize="15sp"
                     android:layout_marginEnd="20dp"
                     android:text="Pesan"
                     android:padding="20dp"
@@ -92,6 +167,8 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatButton
+                    android:textColor="#000"
+                    android:textSize="15sp"
                     android:layout_marginStart="20dp"
                     android:text="Batal"
                     android:padding="20dp"

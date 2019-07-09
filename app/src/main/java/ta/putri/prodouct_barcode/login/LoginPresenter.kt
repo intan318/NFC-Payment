@@ -2,13 +2,16 @@ package ta.putri.prodouct_barcode.login
 
 import android.content.Context
 import android.database.sqlite.SQLiteException
-import kotlinx.coroutines.selects.select
+import kotlinx.coroutines.*
 import org.jetbrains.anko.db.classParser
 import org.jetbrains.anko.db.select
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.toast
-import ta.putri.prodouct_barcode.database
+import org.jetbrains.anko.uiThread
+import ta.putri.prodouct_barcode.utlis.database
 import ta.putri.prodouct_barcode.model.CurrentUser
 import ta.putri.prodouct_barcode.model.UserModel
+import ta.putri.prodouct_barcode.repository.ApiFactory
 
 class LoginPresenter(val context: Context, val view: LoginView) {
 
@@ -18,43 +21,35 @@ class LoginPresenter(val context: Context, val view: LoginView) {
     private var message = " "
     private var id = ""
 
+    private val service = ApiFactory.makeRetrofitService()
+    var job: Job? = null
+
     fun login(email: String, password: String) {
 
         view.onLoading()
-        try {
-            context.database.use {
-                val result = select(UserModel.TABLE_USER)
-                    .whereArgs("(EMAIL = {email})", "email" to email)
-                val user = result.parseList(classParser<UserModel>())
 
-                if (user.isNotEmpty()) {
-                    isRegistered = true
-                    if (password == user[0].password) {
-                        isPasswordtrue = true
-                        CurrentUser.nama = user[0].nama
-                        CurrentUser.email = user[0].email
-                        CurrentUser.id = user[0].id.toString()
-                        id = user[0].id.toString()
+        doAsync {
+
+            job = GlobalScope.launch(Dispatchers.Default) {
+                try {
+
+                    val data = service.login(email, password)
+                    val result = data.await()
+                    withContext(Dispatchers.Main) {
+                        uiThread {
+                            view.getResponses(result.body())
+                            view.onFinish()
+                        }
+                    }
+
+                } catch (e: SQLiteException) {
+                    uiThread {
+                        context.toast(e.localizedMessage)
+                        view.onFinish()
                     }
                 }
             }
 
-            when {
-                !isRegistered -> message = "Anda Belum mendaftar, klik tombol daftar"
-                !isPasswordtrue -> message = "Password anda salah, coba lagi"
-                else -> {
-                    message = "Berhasil Login !"
-                    isLogged = true
-                }
-            }
-            view.getResponses(message, isLogged, id)
-            view.onFinish()
-        } catch (e: SQLiteException) {
-
-            context.toast(e.localizedMessage)
-            view.onFinish()
         }
-
-
     }
 }

@@ -1,22 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              tools:context=".MainActivity">
+<RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".customer.MainActivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <ScrollView
-            android:id="@+id/sv_messages"
+    <RelativeLayout
+            android:elevation="2dp"
+            android:background="#22CEA5"
+            android:layout_alignParentTop="true"
+            android:id="@+id/rel_bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:textColor="#000"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="20dp"
+                android:textStyle="bold"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:text="Daftar Belanja"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:focusableInTouchMode="true"
+                android:focusable="true"
+                android:background="@drawable/ic_profile"
+                android:layout_margin="20dp"
+                android:id="@+id/btn_profile"
+                android:layout_alignParentEnd="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+
+        <androidx.appcompat.widget.AppCompatImageButton
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:background="@drawable/ic_action_back"
+                android:layout_margin="20dp"
+                android:id="@+id/btn_logout"
+                android:layout_alignParentStart="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"/>
+
+    </RelativeLayout>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_above="@id/btn_checkout"
+            android:layout_below="@id/rel_bar"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            android:id="@+id/ll_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             tools:ignore="UselessParent">
 
-        <TextView
-                android:id="@+id/tv_messages"
+        <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rcy_product"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                tools:text="NFC Messages"/>
-    </ScrollView>
-</LinearLayout>
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+                android:id="@+id/ll_empty"
+                android:layout_marginTop="20dp"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="400dp">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_gravity="center"
+                    android:src="@drawable/ic_nfc"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginTop="10dp"
+                    android:textStyle="bold"
+                    android:text="@string/scan_barang_anda_untuk_di_masukan_ke_troli"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+    <androidx.appcompat.widget.AppCompatButton
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:includeFontPadding="true"
+            android:background="#26D5AA"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/btn_checkout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:text="Checkout"/>
+
+</RelativeLayout>
