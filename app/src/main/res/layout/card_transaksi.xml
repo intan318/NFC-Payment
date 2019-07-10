@@ -27,19 +27,31 @@
                     android:layout_marginBottom="8dp"
                     android:textSize="15sp"
                     android:text="Nama barang"
+                    android:id="@+id/txt_namaBarangText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginBottom="8dp"
+                    android:layout_below="@id/txt_namaBarangText"
                     android:id="@+id/txt_namaBarang"
+                    android:textSize="15sp"
+                    android:layout_marginStart="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
         </RelativeLayout>
 
         <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
                     android:textSize="15sp"
                     android:text="Jumlah barang per produk :"
                     android:layout_width="wrap_content"
@@ -56,12 +68,15 @@
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
                     android:textSize="15sp"
                     android:text="Subtotal per produk :"
                     android:layout_width="wrap_content"
@@ -77,13 +92,17 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="#000"
+                    android:textStyle="bold"
                     android:textSize="15sp"
-                    android:text="Tanggal Transaksi"
+                    android:text="Tanggal Transaksi:"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -96,9 +115,13 @@
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <RelativeLayout
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <androidx.appcompat.widget.AppCompatTextView
+                    android:textColor="#000"
+                    android:textStyle="bold"
                     android:textSize="15sp"
                     android:id="@+id/sub"
                     android:text="Total harga"

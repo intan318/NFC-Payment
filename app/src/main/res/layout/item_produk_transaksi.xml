@@ -12,14 +12,15 @@
             android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.LinearLayoutCompat
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:textAlignment="center"
-                    android:id="@+id/txt_nma"
-                    android:layout_width="100dp"
+                    android:id="@+id/txt_namaBarang"
+                    android:layout_width="80dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:text="nama"
@@ -28,7 +29,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                     android:textAlignment="center"
                     android:id="@+id/txt_harga"
-                    android:layout_width="100dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="top"
                     android:text="Harga"
@@ -36,7 +37,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:textAlignment="center"
-                    android:id="@+id/txt_jumlah"
+                    android:id="@+id/txt_jumlahBarang"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="top"
@@ -45,7 +46,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_subtotal"
-                    android:layout_width="140dp"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:text="Subtotal"
                     android:textAlignment="center"

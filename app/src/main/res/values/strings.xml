@@ -1,4 +1,4 @@
 <resources>
-    <string name="app_name">Prodouct_barcode</string>
+    <string name="app_name">NFC Payment</string>
     <string name="scan_barang_anda_untuk_di_masukan_ke_troli">Scan barang anda untuk di masukan ke troli!</string>
 </resources>

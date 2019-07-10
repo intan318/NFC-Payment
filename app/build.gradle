@@ -7,7 +7,7 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "ta.putri.prodouct_barcode"
+        applicationId "ta.putri.prodoct_nfc"
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1

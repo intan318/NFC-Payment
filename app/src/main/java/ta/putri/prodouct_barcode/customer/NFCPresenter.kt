@@ -1,15 +1,12 @@
 package ta.putri.prodouct_barcode.customer
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import ta.putri.prodouct_barcode.repository.ApiFactory
 import java.lang.NullPointerException
 
-class NFCPresenter() {
+class NFCPresenter {
 
     private var nfcView : NFCView? = null
 
@@ -20,20 +17,19 @@ class NFCPresenter() {
         this.nfcView = nfcView
         nfcView?.onLoading()
         doAsync {
-            job = GlobalScope.launch(Dispatchers.Main){
-
-                try {
-                    val data = service.getProductAsync(code)
-                    val result = data.await()
-                    uiThread {
-                        nfcView?.getResponses(result.body())
+            runBlocking {
+                job = launch(Dispatchers.IO) {
+                    try {
+                        val data = service.getProductAsync(code)
+                        val result = data.await()
+                        uiThread {
+                            nfcView?.getResponses(result.body())
+                            nfcView?.onFinish()
+                        }
+                    } catch (e: NullPointerException) {
+                        nfcView?.error(e.toString())
                         nfcView?.onFinish()
                     }
-                }
-
-                catch (e : NullPointerException){
-                    nfcView?.error(e.toString())
-                    nfcView?.onFinish()
                 }
             }
         }

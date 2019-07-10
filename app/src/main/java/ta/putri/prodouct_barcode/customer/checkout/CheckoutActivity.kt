@@ -3,19 +3,20 @@ package ta.putri.prodouct_barcode.customer.checkout
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_checkout.*
-import kotlinx.android.synthetic.main.card_transaksi.*
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.cancelButton
-import org.jetbrains.anko.longToast
-import org.jetbrains.anko.okButton
+import org.jetbrains.anko.*
 import ta.putri.prodouct_barcode.R
+import ta.putri.prodouct_barcode.customer.profile.ProfileActivity
 import ta.putri.prodouct_barcode.model.CurrentUser
 import ta.putri.prodouct_barcode.model.CustomerModel
 import ta.putri.prodouct_barcode.model.PostResponses
 import ta.putri.prodouct_barcode.model.ProductModel
 import ta.putri.prodouct_barcode.utlis.ButtonEventPaymentDialog
 import ta.putri.prodouct_barcode.utlis.DialogView
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class CheckoutActivity : AppCompatActivity(), CheckoutView {
 
@@ -33,36 +34,59 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
         setContentView(R.layout.activity_checkout)
 
 
-        checkoutPresenter = CheckoutPresenter(this)
+        checkoutPresenter = CheckoutPresenter(this, this)
         dialogView = DialogView(this)
+        init()
 
-        if (intent != null) {
-            produks = intent.getParcelableArrayListExtra("produks")
-            subTotals = intent.getIntegerArrayListExtra("subtotals")
-        }
+
+    }
+
+    private fun init() {
+
+
+        produks = CurrentUser.listProduk
+        subTotals = CurrentUser.listSubTotal
+
+        Log.e("PRODUK", produks[0].jumlah)
 
         checkoutProductAdapter = CheckoutProductAdapter(produks)
 
-        val jumlahBarang = produks.map { it.jumlah!!.toInt() }.sum()
+        rcy_checkout.layoutManager = LinearLayoutManager(this)
+        rcy_checkout.itemAnimator = DefaultItemAnimator()
+        rcy_checkout.adapter = checkoutProductAdapter
+
+        val jumlahBarang = produks.map {
+            it.jumlah!!.toInt()
+        }.sum()
         val totalHarga = subTotals.map { it }.sum()
 
-        txt_jumlahBarang.text = jumlahBarang.toString()
+        txt_totalJumlah.text = jumlahBarang.toString()
         txt_totalHarga.text = totalHarga.toString()
+
+
+
 
         btn_pay.setOnClickListener {
 
+            Log.e("SALDO", CurrentUser.saldo)
             val sisaSaldo = CurrentUser.saldo?.toInt()?.minus(totalHarga)
-            if (sisaSaldo != null) {
-                if (sisaSaldo >= 0)
 
-                    dialogView.showDialogOnPayment(
+            if (sisaSaldo != null) {
+                when {
+                    sisaSaldo >= 0 -> dialogView.showDialogOnPayment(
                         totalHarga.toString(),
                         CurrentUser.saldo.toString(),
                         sisaSaldo.toString(),
                         object : ButtonEventPaymentDialog {
                             override fun onClickYa() {
 
-                                checkoutPresenter.payments()
+                                checkoutPresenter.payments(
+                                    produks,
+                                    CurrentUser.id.toString(),
+                                    totalHarga.toString(),
+                                    subTotals.joinToString(","),
+                                    sisaSaldo.toString()
+                                )
                             }
 
                             override fun onClickTidak() {
@@ -70,38 +94,66 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
                             }
 
                         })
-            } else {
-
-                longToast("Saldo anda tidak mencukupi untuk melakukan pembayaran, silahkan isi saldo anda!")
-
-                dialogAlert =
-                    alert(
-                        message = "Saldo anda tidak mencukupi untuk melakukan pembayaran, silahkan isi saldo anda!",
-                        title = "Saldo tidak cukup"
-                    ) {
-                        okButton {
-                            dialogAlert.dismiss()
-                        }
-                    }.show()
-
+                    else -> {
+                        Log.e("SALDO", "gk cukup")
+                        dialogAlert =
+                            alert(
+                                message = "Saldo anda tidak mencukupi untuk melakukan pembayaran, silahkan isi saldo anda!",
+                                title = "Saldo tidak cukup"
+                            ) {
+                                okButton {
+                                    dialogAlert.dismiss()
+                                }
+                            }.show()
+                    }
+                }
+            }else{
+                longToast("Terjadi kesalahan")
             }
         }
 
+        btn_back.setOnClickListener {
+            onBackPressed()
+        }
+
+        btn_profile.setOnClickListener {
+            startActivity(intentFor<ProfileActivity>())
+        }
     }
 
     override fun onLoading() {
 
+        dialogView.showProgressDialog()
+
     }
 
     override fun onFinish() {
-
+        dialogView.hideProgressDialog()
     }
 
-    override fun getResponses(respon: PostResponses?) {
+    override fun getResponses(respon: ConcurrentLinkedQueue<PostResponses>) {
 
+        if (respon.any { it.error == true }) {
+            longToast("Gagal melakukan Transaksi")
+        } else {
+            longToast("Transaksi berhasil")
+            startActivity(intentFor<ProfileActivity>())
+            finish()
+        }
     }
 
     override fun error(pesan: String?) {
 
+        longToast(pesan.toString())
+    }
+
+    override fun onPause() {
+        checkoutPresenter.viewOnDestroy()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        checkoutPresenter.viewOnDestroy()
+        super.onDestroy()
     }
 }

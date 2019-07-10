@@ -33,23 +33,10 @@ class DatabaseOpenHelper(ctx: Context) : ManagedSQLiteOpenHelper(ctx, "pondok_kr
             UserModel.USER_PASSWORD to TEXT + NOT_NULL,
             UserModel.TGL_DAFTAR to TEXT + NOT_NULL
         )
-
-        db?.createTable(
-            TransactionModel.TABLE_TRANSACTION,
-            true,
-            TransactionModel.ID to INTEGER + PRIMARY_KEY + AUTOINCREMENT,
-            TransactionModel.ID_USER to INTEGER + NOT_NULL,
-            TransactionModel.NAMA_PER_BARANG to TEXT,
-            TransactionModel.JUMLAH_PER_BARANG to TEXT,
-            TransactionModel.HARGA_PER_BARANG to TEXT,
-            TransactionModel.TANGGAL to TEXT,
-            TransactionModel.TOTAL_HARGA to TEXT
-        )
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
         db?.dropTable(UserModel.TABLE_USER, true)
-        db?.dropTable(TransactionModel.TABLE_TRANSACTION, true)
     }
 }
 

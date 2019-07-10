@@ -34,9 +34,8 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"
-                    android:background="@drawable/ic_profile"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_profile"
                     android:layout_margin="20dp"
                     android:id="@+id/btn_profile"
                     android:layout_alignParentEnd="true"
@@ -44,11 +43,10 @@
                     android:layout_height="30dp"/>
 
             <androidx.appcompat.widget.AppCompatImageButton
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:background="@drawable/ic_action_back"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_action_back"
                     android:layout_margin="20dp"
-                    android:id="@+id/btn_logout"
+                    android:id="@+id/btn_back"
                     android:layout_alignParentStart="true"
                     android:layout_width="30dp"
                     android:layout_height="30dp"/>
@@ -70,29 +68,33 @@
                     android:layout_height="wrap_content">
 
                 <LinearLayout
+                        android:gravity="center"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
 
                     <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
                             android:textAlignment="center"
                             android:id="@+id/txtMovieName"
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="top"
                             android:text="Nama"
                             android:textSize="14sp"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
                             android:textAlignment="center"
                             android:id="@+id/txtYear"
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="match_parent"
                             android:layout_gravity="top"
                             android:text="Harga"
                             android:textSize="14sp"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
                             android:textAlignment="center"
                             android:id="@+id/txtCost"
                             android:layout_width="70dp"
@@ -102,8 +104,9 @@
                             android:textSize="14sp"/>
 
                     <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
                             android:id="@+id/Total"
-                            android:layout_width="100dp"
+                            android:layout_width="80dp"
                             android:layout_height="match_parent"
                             android:text="Subtotal"
                             android:textAlignment="center"
@@ -147,7 +150,6 @@
 
                     <androidx.appcompat.widget.AppCompatTextView
                             android:textSize="15sp"
-                            android:id="@+id/sub"
                             android:text="Total harga"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -155,7 +157,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                             android:textColor="#000"
                             android:textSize="15sp"
-                            android:layout_toStartOf="@id/txt_total"
+                            android:layout_toStartOf="@id/txt_totalHarga"
                             android:text="Rp."
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -184,11 +186,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <androidx.appcompat.widget.AppCompatButton
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:textSize="20sp"
                     android:includeFontPadding="true"
                     android:background="#26D5AA"
                     android:layout_centerHorizontal="true"
-                    android:layout_gravity="bottom"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
                     android:text="Bayar"/>

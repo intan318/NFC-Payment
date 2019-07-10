@@ -1,13 +1,13 @@
 package ta.putri.prodouct_barcode.customer.checkout
 
 import android.content.Context
-import android.util.Log
 import kotlinx.coroutines.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.toast
 import org.jetbrains.anko.uiThread
+import ta.putri.prodouct_barcode.model.PostResponses
 import ta.putri.prodouct_barcode.model.ProductModel
 import ta.putri.prodouct_barcode.repository.ApiFactory
+import java.util.concurrent.ConcurrentLinkedQueue
 
 class CheckoutPresenter(private var checkoutView: CheckoutView?, private val context: Context) {
 
@@ -25,47 +25,44 @@ class CheckoutPresenter(private var checkoutView: CheckoutView?, private val con
 
         checkoutView?.onLoading()
 
-        val idProduks = produks.map { it.id }.joinToString(",")
-        val jumlahPerProduk = produks.map { it.jumlah }.joinToString(",")
-
         doAsync {
-            job = GlobalScope.launch(Dispatchers.Default) {
+            val lstOfReturnData = ConcurrentLinkedQueue<PostResponses>()
+            val idProduks = produks.map { it.nama }.joinToString(",")
+            val jumlahPerProduk = produks.map { it.jumlah }.joinToString(",")
+            try {
+                job = runBlocking {
+                    produks.forEach {
+                        launch(Dispatchers.IO) {
+                            val data = service.triggerProduk(
+                                customer_id,
+                                it.id.toString(),
+                                it.jumlah.toString()
+                            )
+                            val result = data.await()
+                            lstOfReturnData.add(result.body())
+                        }
+                    }
 
-                try {
-                    for (produk in produks) {
-
-                        val data = service.triggerProduk(
+                    launch(Dispatchers.IO) {
+                        val transactionData = service.inputTransaksi(
                             customer_id,
-                            produk.id.toString(),
-                            produk.jumlah.toString()
+                            idProduks, jumlahPerProduk, subTotals, totalHarga
                         )
-                        val result = data.await()
-                        Log.e("trigger", result.body()?.message)
-                    }
 
-                    val transactionData = service.inputTransaksi(
-                        customer_id,
-                        idProduks, jumlahPerProduk, subTotals, totalHarga
-                    )
-                    val profileUpdate = service.updateSaldoCustomer(saldoBaru)
-                    val profileResult = profileUpdate.await()
-                    val resultTransaction = transactionData.await()
-
-                    withContext(Dispatchers.Main) {
-                        uiThread {
-
-                            context.toast("update saldo" + profileResult.body()?.error.toString())
-                            checkoutView?.getResponses(resultTransaction.body())
-                            checkoutView?.onFinish()
-                        }
+                        val resultTransaction = transactionData.await()
+                        lstOfReturnData.add(resultTransaction.body())
                     }
-                } catch (e: Exception) {
-                    withContext(Dispatchers.Main) {
-                        uiThread {
-                            checkoutView?.onFinish()
-                            checkoutView?.error(e.localizedMessage.toString())
-                        }
-                    }
+                }
+
+                uiThread {
+                    checkoutView?.getResponses(lstOfReturnData)
+                    checkoutView?.onFinish()
+                }
+            } catch (e: Exception) {
+
+                uiThread {
+                    checkoutView?.error(e.toString())
+                    checkoutView?.onFinish()
                 }
             }
         }

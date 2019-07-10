@@ -97,6 +97,7 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
         txt_daftar.text = customerModel.createdAt
         txt_saldo.text = customerModel.saldo
 
+
         if(transactions.size == 0 || transaksi.isEmpty()){
             rcy_transaksi.visibility = View.GONE
             ll_empty.visibility = View.VISIBLE
@@ -112,4 +113,16 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
 
         toast(pesan.toString())
     }
+
+
+    override fun onDestroy() {
+        profilePresenter.viewOnDestroy()
+        super.onDestroy()
+    }
+
+    override fun onPause() {
+        profilePresenter.viewOnDestroy()
+        super.onPause()
+    }
+
 }

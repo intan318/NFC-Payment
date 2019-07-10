@@ -98,8 +98,6 @@
                 android:layout_height="wrap_content">
 
             <androidx.appcompat.widget.AppCompatImageButton
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"
                     android:background="?selectableItemBackground"
                     android:src="@drawable/ic_minus"
                     android:layout_marginStart="50dp"
@@ -135,8 +133,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatImageButton
-                    android:focusableInTouchMode="true"
-                    android:focusable="true"
                     android:background="?selectableItemBackground"
                     android:src="@drawable/ic_plus"
                     android:layout_marginEnd="50dp"

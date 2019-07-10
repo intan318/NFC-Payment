@@ -2,25 +2,25 @@
 
 package ta.putri.prodouct_barcode.customer
 
-import android.app.PendingIntent
-import android.nfc.NfcAdapter
-import androidx.appcompat.app.AppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
-import ta.putri.prodouct_barcode.utlis.ButtonEventConfirmationDialogListener
-import ta.putri.prodouct_barcode.utlis.DialogView
-import android.nfc.NdefRecord
 import android.annotation.SuppressLint
-import android.nfc.tech.Ndef
-import android.util.Log
-import ta.putri.prodouct_barcode.utlis.NFCUtils
-import android.content.IntentFilter.MalformedMimeTypeException
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.*
+import android.content.IntentFilter.MalformedMimeTypeException
+import android.nfc.NdefRecord
+import android.nfc.NfcAdapter
 import android.nfc.Tag
-import android.os.*
+import android.nfc.tech.Ndef
+import android.os.AsyncTask
+import android.os.Bundle
+import android.os.Parcelable
+import android.os.Vibrator
+import android.util.Log
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import ta.putri.prodouct_barcode.R
 import ta.putri.prodouct_barcode.customer.checkout.CheckoutActivity
@@ -31,6 +31,8 @@ import ta.putri.prodouct_barcode.model.CurrentUser
 import ta.putri.prodouct_barcode.model.CustomerModel
 import ta.putri.prodouct_barcode.model.ProductModel
 import ta.putri.prodouct_barcode.model.TransactionModel
+import ta.putri.prodouct_barcode.utlis.ButtonEventConfirmationDialogListener
+import ta.putri.prodouct_barcode.utlis.DialogView
 import ta.putri.prodouct_barcode.utlis.SessionManager
 import java.io.UnsupportedEncodingException
 import java.util.*
@@ -73,14 +75,15 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putParcelableArrayList("LIST", java.util.ArrayList(produks))
+        outState.putParcelableArrayList("LIST", ArrayList(produks))
     }
 
     private fun init() {
 
         profilePresenter = ProfilePresenter(profileView = null)
+        nfcPresenter = NFCPresenter()
 
-        profilePresenter.getProfile(CurrentUser.id.toString(), object : ProfileView{
+        profilePresenter.getProfile(CurrentUser.id.toString(), object : ProfileView {
             override fun onLoading() {
                 dialogView.showProgressDialog()
             }
@@ -93,6 +96,7 @@ class MainActivity : AppCompatActivity() {
                 CurrentUser.saldo = respon!!.saldo
                 CurrentUser.email = respon.email
                 CurrentUser.nama = respon.nama
+                txt_nama_user.text = respon.nama
             }
 
             override fun error(pesan: String?) {
@@ -105,20 +109,12 @@ class MainActivity : AppCompatActivity() {
         rcy_product.layoutManager = LinearLayoutManager(this)
         rcy_product.itemAnimator = DefaultItemAnimator()
 
-        val item = ProductModel(id = "1", harga = "100000", nama = "Barang1", jumlah = "2")
-        val item2 = ProductModel(id = "2", harga = "500000", nama = "Barang2", jumlah = "3")
-        val item3 = ProductModel(id = "3", harga = "200000", nama = "Barang3", jumlah = "4")
-
-        produks.add(item)
-        produks.add(item2)
-        produks.add(item3)
-
         productAdapter = ProductAdapter(produks, subTotals, { position ->
             dialogView.showAddProductDialog(
                 produks[position].nama.toString(),
                 produks[position].harga.toString(),
                 produks[position].jumlah.toString(),
-
+                produks[position].stock.toString(),
                 object : ButtonEventConfirmationDialogListener {
                     override fun onClickYa(jumlah: Int) {
                         produks[position].jumlah = jumlah.toString()
@@ -151,16 +147,18 @@ class MainActivity : AppCompatActivity() {
         rcy_product.adapter = productAdapter
 
         //toast(NFCUtils.retrieveNFCMessage(this.intent))
-        showAddProduct("5, Naufal,  5000000")
+        //showAddProduct("5, Naufal,  5000000")
 
         btn_profile.setOnClickListener {
             startActivity(intentFor<ProfileActivity>())
         }
         btn_checkout.setOnClickListener {
+
+            CurrentUser.listProduk = produks
+            CurrentUser.listSubTotal = subTotals
+
             startActivity(
                 intentFor<CheckoutActivity>(
-                    "produks" to produks,
-                    "subtotals" to subTotals
                 )
             )
         }
@@ -185,73 +183,72 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     fun showAddProduct(product: String) {
 
-        if (produks.any { it.id == product }) {
-            dialogAlert =
-                alert(
-                    message = "Barang yang anda scan sudah tersedia di list belanja anda!",
-                    title = "Sudah belanja"
-                ) {
-                    okButton {
-                        dialogAlert.dismiss()
-                    }
-                }.show()
 
-        } else {
+        var produk: ProductModel
 
-            var produk = ProductModel()
-            nfcPresenter.retriveProduct(product, object : NFCView {
-                override fun onLoading() {
-                    dialogView.showProgressDialog()
-                }
+        nfcPresenter.retriveProduct(product, object : NFCView {
+            override fun onLoading() {
+                dialogView.showProgressDialog()
+            }
 
-                override fun onFinish() {
-                    dialogView.hideProgressDialog()
-                }
+            override fun onFinish() {
+                dialogView.hideProgressDialog()
+            }
 
-                override fun getResponses(respon: ProductModel?) {
-                    produk = respon!!
-                }
+            override fun getResponses(respon: ProductModel?) {
+                produk = respon!!
+                if (produks.any { it.id == produk.id }) {
+                    dialogAlert =
+                        alert(
+                            message = "Barang yang anda scan sudah tersedia di list belanja anda!",
+                            title = "Sudah belanja"
+                        ) {
+                            okButton {
+                                dialogAlert.dismiss()
+                            }
+                        }.show()
 
-                override fun error(pesan: String?) {
-                    toast(pesan.toString())
-                }
+                } else {
+                    vibrator.vibrate(300)
+                    dialogView.showAddProductDialog(
+                        produk.nama.toString(),
+                        produk.harga.toString(),
+                       "1",
+                        produk.stock.toString(),
+                        object : ButtonEventConfirmationDialogListener {
+                            override fun onClickYa(jumlah: Int) {
+                                if (jumlah > 0) {
+                                    produk.jumlah = jumlah.toString()
 
-            })
+                                    val subTotal = when {
+                                        produk.jumlah == null || produk.harga == null -> 0
+                                        else -> produk.harga!!.toInt() * jumlah
+                                    }
 
-            vibrator.vibrate(300)
-            dialogView.showAddProductDialog(
-                produk.nama.toString(),
-                produk.harga.toString(),
-                "1",
-                object : ButtonEventConfirmationDialogListener {
-                    override fun onClickYa(jumlah: Int) {
-                        if (jumlah > 0) {
-                            produk.jumlah = jumlah.toString()
+                                    Log.e("JUMLAH", produk.jumlah)
+                                    produks.add(produk)
+                                    subTotals.add(subTotal)
+                                    productAdapter.notifyDataSetChanged()
 
-                            val subTotal = when {
-                                produk.jumlah == null || produk.harga == null -> 0
-                                else -> produk.harga!!.toInt() * jumlah
+                                    controlUI()
+                                } else {
+                                    longToast("Barang batal di pesan")
+                                }
                             }
 
+                            override fun onClickTidak() {
+                                toast("Barang batal di pesan")
+                            }
 
-                            produks.add(produk)
-                            subTotals.add(subTotal)
-                            productAdapter.notifyDataSetChanged()
+                        })
+                }
+            }
 
-                            controlUI()
-                        }
-                        else{
-                            longToast("Barang batal di pesan")
-                        }
-                    }
+            override fun error(pesan: String?) {
+                toast(pesan.toString())
+            }
 
-                    override fun onClickTidak() {
-                        toast("Barang batal di pesan")
-                    }
-
-                })
-        }
-
+        })
 
     }
 
@@ -385,7 +382,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         mNfcAdapter?.let { stopForegroundDispatch(this, it) }
+        nfcPresenter.viewOnDestroy()
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        nfcPresenter.viewOnDestroy()
+        super.onDestroy()
     }
 
     override fun onNewIntent(intent: Intent?) {

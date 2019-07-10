@@ -37,7 +37,8 @@ class DialogView(private var activity: Activity) {
     fun showAddProductDialog(
         namaBarang: String,
         hargaBarang: String,
-        jumlah: String,
+        jumlah : String,
+        stock: String,
         eventConfirmation: ButtonEventConfirmationDialogListener
     ) {
 
@@ -47,6 +48,7 @@ class DialogView(private var activity: Activity) {
 
         addProductDialogView.nama_barang.text = namaBarang
         addProductDialogView.harga_barang.text = hargaBarang
+        addProductDialogView.txt_stock.text = stock
         addProductDialogView.jumlah_barang.setText(jumlah)
 
 
@@ -88,7 +90,7 @@ class DialogView(private var activity: Activity) {
     fun showDialogOnPayment(totalHarga : String, saldoCustomer : String, saldoAkhir : String, event: ButtonEventPaymentDialog){
 
         val factory = LayoutInflater.from(activity)
-        val paymentDialogView = factory.inflate(R.layout.add_product_layout, null)
+        val paymentDialogView = factory.inflate(R.layout.dialog_payment_layout, null)
         val paymentDialog = AlertDialog.Builder(activity).create()
 
         paymentDialogView.txt_old_saldo.text = saldoCustomer

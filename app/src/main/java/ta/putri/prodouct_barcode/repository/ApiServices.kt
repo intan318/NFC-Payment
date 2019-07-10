@@ -66,7 +66,7 @@ interface ApiServices {
         @Field("customer_id") customer_id: String,
         @Field("produk_id") produk_id: String,
         @Field("jumlah") jumlah: String
-    ): Deferred<Response<LoginRespons?>>
+    ): Deferred<Response<PostResponses?>>
 
 
     @Headers("Accept: application/json")
