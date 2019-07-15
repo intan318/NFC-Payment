@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools"
-          package="ta.putri.prodouct_barcode">
+          package="ta.putri.nfc">
 
     <uses-permission android:name="android.permission.NFC"/>
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -23,20 +23,20 @@
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning"
             tools:targetApi="m">
-        <activity android:name=".customer.profile.ProfileActivity">
+        <activity android:name="ta.putri.nfc.customer.profile.ProfileActivity">
         </activity>
-        <activity android:name=".customer.checkout.CheckoutActivity">
+        <activity android:name="ta.putri.nfc.customer.checkout.CheckoutActivity">
         </activity>
-        <activity android:name=".register.RegisterActivity">
+        <activity android:name="ta.putri.nfc.register.RegisterActivity">
         </activity>
-        <activity android:name=".login.LoginActivity">
+        <activity android:name="ta.putri.nfc.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".customer.MainActivity">
+        <activity android:name="ta.putri.nfc.customer.MainActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED"/>
             </intent-filter>
