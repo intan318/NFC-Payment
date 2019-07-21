@@ -24,8 +24,9 @@ data class ProductModel(
 
     var jumlah: String? = null // 2null
 
-):Parcelable{
+) : Parcelable {
     constructor(parcel: Parcel) : this(
+        parcel.readString(),
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
@@ -35,15 +36,15 @@ data class ProductModel(
         parcel.readString()
     )
 
-
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(createdAt)
         parcel.writeString(harga)
         parcel.writeString(id)
         parcel.writeString(kode)
         parcel.writeString(nama)
-        parcel.writeString(jumlah)
+        parcel.writeString(stock)
         parcel.writeString(updatedAt)
+        parcel.writeString(jumlah)
     }
 
     override fun describeContents(): Int {
@@ -59,5 +60,4 @@ data class ProductModel(
             return arrayOfNulls(size)
         }
     }
-
 }

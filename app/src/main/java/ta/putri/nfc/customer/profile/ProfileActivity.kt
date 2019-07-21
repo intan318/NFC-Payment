@@ -20,11 +20,14 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
 
     private lateinit var customerModel: CustomerModel
     private var transactions: MutableList<TransactionModel> = mutableListOf()
+
     private lateinit var sessionManager: SessionManager
     private lateinit var dialogView: DialogView
     private lateinit var profilePresenter: ProfilePresenter
     private lateinit var dialogAlert: DialogInterface
+
     private lateinit var transactionAdapter: TransactionAdapter
+    private lateinit var lastActivityAdapter: LastActivityAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,9 +39,11 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
         dialogView = DialogView(this)
         sessionManager = SessionManager(this)
         transactionAdapter = TransactionAdapter(transactions)
+        lastActivityAdapter = LastActivityAdapter(CurrentUser.listProduk)
+
+
 
         init()
-
         profilePresenter.getProfile(CurrentUser.id!!, this)
 
     }
@@ -71,7 +76,40 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
         rcy_transaksi.itemAnimator = DefaultItemAnimator()
         rcy_transaksi.adapter = transactionAdapter
 
+        rcy_lastTransaction.layoutManager = LinearLayoutManager(this)
+        rcy_lastTransaction.setHasFixedSize(true)
+        rcy_lastTransaction.itemAnimator = DefaultItemAnimator()
+        rcy_lastTransaction.adapter = lastActivityAdapter
 
+
+        val bundle = intent.extras
+
+        if (bundle != null) {
+            val jumlahBarang = CurrentUser.listProduk.map {
+                it.jumlah!!.toInt()
+            }.sum()
+            val totalHarga = CurrentUser.listSubTotal.map { it }.sum()
+
+            val status = intent.getBooleanExtra("status", false)
+
+            val currentStatus = if (status) {
+                "Berhasil"
+            } else {
+                "Saldo tidak cukup"
+            }
+
+
+            txt_totalJumlah.text = jumlahBarang.toString()
+            txt_totalHarga.text = totalHarga.toString()
+            txt_saldoawal.text = CurrentUser.saldo
+            txt_saldoakhir.text = intent.getStringExtra("saldoAkhir")
+            txt_tanggal.text = intent.getStringExtra("tanggal")
+            txt_status.text = currentStatus
+
+        } else {
+            card_lastActivity_span.visibility = View.GONE
+            card_lastActivity.visibility = View.GONE
+        }
     }
 
 
@@ -97,11 +135,10 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
         txt_saldo.text = customerModel.saldo
 
 
-        if(transactions.size == 0 || transaksi.isEmpty()){
+        if (transactions.size == 0 || transaksi.isEmpty()) {
             rcy_transaksi.visibility = View.GONE
             ll_empty.visibility = View.VISIBLE
-        }
-        else{
+        } else {
             rcy_transaksi.visibility = View.VISIBLE
             ll_empty.visibility = View.GONE
         }

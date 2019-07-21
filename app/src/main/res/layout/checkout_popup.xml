@@ -13,45 +13,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-
-        <RelativeLayout
-                android:elevation="2dp"
-                android:background="#2BC7A1"
-                android:layout_alignParentTop="true"
-                android:id="@+id/rel_bar"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                    android:textColor="#000"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="20dp"
-                    android:textStyle="bold"
-                    android:layout_gravity="center"
-                    android:textSize="20sp"
-                    android:text="Checkout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                    android:background="?selectableItemBackground"
-                    android:src="@drawable/ic_profile"
-                    android:layout_margin="20dp"
-                    android:id="@+id/btn_profile"
-                    android:layout_alignParentEnd="true"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                    android:background="?selectableItemBackground"
-                    android:src="@drawable/ic_action_back"
-                    android:layout_margin="20dp"
-                    android:id="@+id/btn_back"
-                    android:layout_alignParentStart="true"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"/>
-        </RelativeLayout>
-
         <androidx.cardview.widget.CardView
                 android:layout_margin="10dp"
                 app:cardMaxElevation="4dp"
@@ -174,7 +135,6 @@
                 </RelativeLayout>
             </androidx.appcompat.widget.LinearLayoutCompat>
         </androidx.cardview.widget.CardView>
-
         <androidx.cardview.widget.CardView
                 android:id="@+id/btn_pay"
                 app:cardMaxElevation="4dp"

@@ -2,7 +2,7 @@ package ta.putri.nfc.customer
 
 import ta.putri.nfc.model.ProductModel
 
-interface NFCView {
+interface ProductNFCView {
 
     fun onLoading()
     fun onFinish()

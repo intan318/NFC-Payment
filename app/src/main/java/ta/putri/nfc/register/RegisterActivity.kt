@@ -40,18 +40,20 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
             val email = edt_email.text.toString().trim()
             val password = edt_password.text.toString().trim()
             val konfirmasiPassword = edt_konfirmasi_password.text.toString().trim()
+            val uid = edt_uid.text.toString().trim()
 
             if (nama.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty() && konfirmasiPassword.isNotEmpty()
+                && uid.isNotEmpty()
             ) {
 
                 if (password == konfirmasiPassword) {
-                    registerPresenter.register(nama, email, password)
+                    registerPresenter.register(nama, email, password, uid)
 
                 } else {
                     toast("Password dan konfirmasi tidak sama !")
                 }
             } else {
-                toast("Harap semua form di isi !")
+                toast("Harap semua data di isi !")
             }
         }
         btn_reset.setOnClickListener {

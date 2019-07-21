@@ -1,9 +1,11 @@
 package ta.putri.nfc.customer.checkout
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_checkout.*
@@ -15,6 +17,11 @@ import ta.putri.nfc.model.PostResponses
 import ta.putri.nfc.model.ProductModel
 import ta.putri.nfc.utlis.ButtonEventPaymentDialog
 import ta.putri.nfc.utlis.DialogView
+import java.text.SimpleDateFormat
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
 class CheckoutActivity : AppCompatActivity(), CheckoutView {
@@ -25,7 +32,9 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
     private var subTotals: MutableList<Int> = mutableListOf()
     private lateinit var checkoutProductAdapter: CheckoutProductAdapter
     private lateinit var dialogView: DialogView
-    private lateinit var dialogAlert: DialogInterface
+
+    var sisaSaldo = 0
+    var status: Boolean = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,7 +55,7 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
         produks = CurrentUser.listProduk
         subTotals = CurrentUser.listSubTotal
 
-        Log.e("PRODUK", produks[0].jumlah)
+        //Log.e("PRODUK", produks[0].jumlah)
 
         checkoutProductAdapter = CheckoutProductAdapter(produks)
 
@@ -62,53 +71,60 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
         txt_totalJumlah.text = jumlahBarang.toString()
         txt_totalHarga.text = totalHarga.toString()
 
+        val saldoCustomer = CurrentUser.saldo?.toInt()
+
 
 
 
         btn_pay.setOnClickListener {
 
-            Log.e("SALDO", CurrentUser.saldo)
-            val sisaSaldo = CurrentUser.saldo?.toInt()?.minus(totalHarga)
-
-            if (sisaSaldo != null) {
-                when {
-                    sisaSaldo >= 0 -> dialogView.showDialogOnPayment(
-                        totalHarga.toString(),
-                        CurrentUser.saldo.toString(),
-                        sisaSaldo.toString(),
-                        object : ButtonEventPaymentDialog {
-                            override fun onClickYa() {
-
-                                checkoutPresenter.payments(
-                                    produks,
-                                    CurrentUser.id.toString(),
-                                    totalHarga.toString(),
-                                    subTotals.joinToString(","),
-                                    sisaSaldo.toString()
-                                )
-                            }
-
-                            override fun onClickTidak() {
-
-                            }
-
-                        })
-                    else -> {
-                        Log.e("SALDO", "gk cukup")
-                        dialogAlert =
-                            alert(
-                                message = "Saldo anda tidak mencukupi untuk melakukan pembayaran, silahkan isi saldo anda!",
-                                title = "Saldo tidak cukup"
-                            ) {
-                                okButton {
-                                    dialogAlert.dismiss()
-                                }
-                            }.show()
-                    }
+            if (saldoCustomer != null) {
+                sisaSaldo = if (saldoCustomer >= totalHarga) {
+                    status = true
+                    saldoCustomer.minus(totalHarga)
+                } else {
+                    status = false
+                    saldoCustomer
                 }
-            }else{
-                longToast("Terjadi kesalahan")
             }
+
+
+            checkoutPresenter.payments(
+                produks,
+                CurrentUser.id.toString(),
+                totalHarga.toString(),
+                subTotals.joinToString(","),
+                CurrentUser.uid.toString(),
+                CurrentUser.saldo.toString(),
+                sisaSaldo.toString(),
+                status
+            )
+
+
+            /*dialogView.showDialogOnPayment(
+            totalHarga.toString(),
+            CurrentUser.saldo.toString(),
+            sisaSaldo.toString(),
+            object : ButtonEventPaymentDialog {
+                override fun onClickYa() {
+
+                }
+
+                override fun onClickTidak() {
+                }
+            })*/
+            /*else -> {
+            Log.e("SALDO", "gk cukup")
+            dialogAlert =
+                alert(
+                    message = "Saldo anda tidak mencukupi untuk melakukan pembayaran, silahkan isi saldo anda!",
+                    title = "Saldo tidak cukup"
+                ) {
+                    okButton {
+                        dialogAlert.dismiss()
+                    }
+                }.show()
+        }*/
         }
 
         btn_back.setOnClickListener {
@@ -130,13 +146,24 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
         dialogView.hideProgressDialog()
     }
 
+    @SuppressLint("SimpleDateFormat")
     override fun getResponses(respon: ConcurrentLinkedQueue<PostResponses>) {
+
+        val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
+        val currentDate = sdf.format(Date())
 
         if (respon.any { it.error == true }) {
             longToast("Gagal melakukan Transaksi")
         } else {
-            longToast("Transaksi berhasil")
-            startActivity(intentFor<ProfileActivity>())
+            longToast("Pemesanan telah di konfirmasi")
+            startActivity(
+                intentFor<ProfileActivity>(
+                    "saldoAkhir" to sisaSaldo.toString(),
+                    "tanggal" to currentDate.toString(),
+                    "status" to status
+                )
+            )
+
             finish()
         }
     }

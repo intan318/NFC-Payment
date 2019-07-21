@@ -15,7 +15,9 @@ data class CustomerModel(
     @SerializedName("password")
     var password: String? = "", // $2y$10$QZQSQjiZB8Gdzi9zftyPrOSCXFWhic.G4ws2CIYiDi1kqUEm2/OL6
     @SerializedName("saldo")
-    var saldo: String? = "", // 2000000
+    var saldo: String? = "", // 2000000,
+    @SerializedName("uid")
+    var uid: String? = "", // 2000000
     @SerializedName("updated_at")
     var updatedAt: String? = "" // 2019-07-08 02:53:40
 )

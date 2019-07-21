@@ -16,7 +16,7 @@ class RegisterPresenter(val context: Context, var view: RegisterView?) {
     var job: Job? = null
 
     @SuppressLint("SimpleDateFormat")
-    fun register(nama: String, email: String, password: String) {
+    fun register(nama: String, email: String, password: String, uid : String) {
 
         view?.onLoading()
 
@@ -24,7 +24,7 @@ class RegisterPresenter(val context: Context, var view: RegisterView?) {
             try {
                 runBlocking {
                     launch(Dispatchers.IO) {
-                        val data = service.regisCustomer(nama, email, password, "0")
+                        val data = service.regisCustomer(nama, email, password, "0", uid)
                         val result = data.await()
 
                         uiThread {

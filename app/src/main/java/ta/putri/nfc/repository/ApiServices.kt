@@ -31,22 +31,10 @@ interface ApiServices {
         @Field("nama") nama: String?,
         @Field("email") email: String?,
         @Field("password") password: String?,
-        @Field("saldo") saldo : String?
+        @Field("saldo") saldo : String?,
+        @Field("uid") uid : String?
     ): Deferred<Response<PostResponses>>
 
-    /*@FormUrlEncoded
-    @Headers("Accept: application/json")
-    @PUT("customer")
-    fun updateSaldoCustomer(
-        @Field("saldo") saldo: String?
-    ): Deferred<Response<PostResponses>>
-
-    @FormUrlEncoded
-    @Headers("Accept: application/json")
-    @PUT("produk")
-    fun updateProduk(
-        @Field("stock") stock: String?
-    ): Deferred<Response<PostResponses>>*/
 
     @FormUrlEncoded
     @Headers("Accept: application/json")
@@ -56,23 +44,40 @@ interface ApiServices {
         @Field("produk_id") produks_id: String?,
         @Field("jumlah_per_produk") jumlah_produk: String?,
         @Field("subtotal_per_produk") subtotal: String?,
-        @Field("total_harga") total_harga: String?
+        @Field("total_harga") total_harga: String?,
+        @Field("kode_device") kode_device : String?,
+        @Field("saldo_awal") saldow_awal : String?,
+        @Field("saldo_akhir") saldo_akhir : String?,
+        @Field("status") status : String
     ): Deferred<Response<PostResponses>>
 
     //updated when transaksi
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("terjual")
-    fun triggerProduk(
+    fun insertProdukTerjual(
         @Field("customer_id") customer_id: String,
         @Field("produk_id") produk_id: String,
         @Field("jumlah") jumlah: String
+    ): Deferred<Response<PostResponses?>>
+
+    @FormUrlEncoded
+    @Headers("Accept: application/json")
+    @POST("histori")
+    fun insertHistory(
+        @Field("uid") uid : String,
+        @Field("saldo_awal") saldo_awal: String,
+        @Field("saldo_akhir") saldo_akhir: String,
+        @Field("total_harga") pengurangan : String,
+        @Field("status") status : String
     ): Deferred<Response<PostResponses?>>
 
 
     @Headers("Accept: application/json")
     @GET("transaksi/customer/{id}")
     fun getTrnsaksiCustomer(@Path("id") id: String): Deferred<Response<List<TransactionModel>?>>
+
+
 
 
 

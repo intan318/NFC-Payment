@@ -4,9 +4,8 @@
           package="ta.putri.nfc">
 
     <uses-permission android:name="android.permission.NFC"/>
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
-
 
     <uses-feature
             android:name="android.hardware.nfc"
@@ -15,28 +14,30 @@
     <application
             android:allowBackup="true"
             android:fullBackupContent="@xml/backup_descriptor"
-            android:icon="@mipmap/ic_launcher"
+            android:icon="@mipmap/ic_money_launcher_square"
             android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
+            android:roundIcon="@mipmap/ic_money_launcher"
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true"
             tools:ignore="GoogleAppIndexingWarning"
             tools:targetApi="m">
-        <activity android:name="ta.putri.nfc.customer.profile.ProfileActivity">
+        <activity android:name=".AboutActivity">
         </activity>
-        <activity android:name="ta.putri.nfc.customer.checkout.CheckoutActivity">
+        <activity android:name=".customer.profile.ProfileActivity">
         </activity>
-        <activity android:name="ta.putri.nfc.register.RegisterActivity">
+        <activity android:name=".customer.checkout.CheckoutActivity">
         </activity>
-        <activity android:name="ta.putri.nfc.login.LoginActivity">
+        <activity android:name=".register.RegisterActivity">
+        </activity>
+        <activity android:name=".login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="ta.putri.nfc.customer.MainActivity">
+        <activity android:name=".customer.MainActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED"/>
             </intent-filter>

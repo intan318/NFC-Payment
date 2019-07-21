@@ -54,6 +54,7 @@
 
         <androidx.appcompat.widget.LinearLayoutCompat
                 android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
                 android:orientation="vertical"
                 android:padding="10dp"
                 android:layout_width="match_parent"
@@ -113,6 +114,249 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.cardview.widget.CardView
+                android:id="@+id/card_lastActivity_span"
+                android:elevation="2dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_margin="16dp"
+                    android:textSize="16sp"
+                    android:text="Transaksi terakhir"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+                android:id="@+id/card_lastActivity"
+                android:layout_margin="10dp"
+                app:cardMaxElevation="4dp"
+                app:cardCornerRadius="4dp"
+                android:elevation="2dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                <LinearLayout
+                        android:gravity="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textAlignment="center"
+                            android:id="@+id/txtMovieName"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="top"
+                            android:text="Nama"
+                            android:textSize="14sp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textAlignment="center"
+                            android:id="@+id/txtYear"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="top"
+                            android:text="Harga"
+                            android:textSize="14sp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textAlignment="center"
+                            android:id="@+id/txtCost"
+                            android:layout_width="70dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="top"
+                            android:text="Jumlah barang"
+                            android:textSize="14sp"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:id="@+id/Total"
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:text="Subtotal"
+                            android:textAlignment="center"
+                            android:textSize="14sp"/>
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                        android:layout_marginTop="8dp"
+                        android:id="@+id/rcy_lastTransaction"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <RelativeLayout
+                        android:layout_marginTop="16dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="15sp"
+                            android:id="@+id/sub"
+                            android:text="Total jumlah barang"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:id="@+id/txt_totalJumlah"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:text="000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="15sp"
+                            android:text="Total harga"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:layout_toStartOf="@id/txt_totalHarga"
+                            android:text="Rp."
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:id="@+id/txt_totalHarga"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:text="000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="15sp"
+                            android:id="@+id/sub"
+                            android:text="Saldo awal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:layout_toStartOf="@id/txt_saldoawal"
+                            android:text="Rp."
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:id="@+id/txt_saldoawal"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:text="000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="15sp"
+                            android:id="@+id/sub"
+                            android:text="Saldo akhir"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:layout_toStartOf="@id/txt_saldoakhir"
+                            android:text="Rp."
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:id="@+id/txt_saldoakhir"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:text="000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="15sp"
+                            android:text="Status transaksi"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:id="@+id/txt_status"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:text="000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+
+                <RelativeLayout
+                        android:layout_marginTop="8dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textSize="15sp"
+                            android:text="Tanggal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                            android:textColor="#000"
+                            android:textSize="15sp"
+                            android:id="@+id/txt_tanggal"
+                            android:textAlignment="center"
+                            android:layout_alignParentEnd="true"
+                            android:text="000"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </RelativeLayout>
+            </androidx.appcompat.widget.LinearLayoutCompat>
+        </androidx.cardview.widget.CardView>
+
 
         <androidx.cardview.widget.CardView
                 android:elevation="2dp"
@@ -155,7 +399,6 @@
                     android:text="Belum ada Transaksi yang dilakukan"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-
         </androidx.appcompat.widget.LinearLayoutCompat>
 
 

@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var dialogView: DialogView
     private var mNfcAdapter: NfcAdapter? = null
     private lateinit var vibrator: Vibrator
-    private lateinit var nfcPresenter: NFCPresenter
+    private lateinit var productNfcPresenter: ProductNFCPresenter
     private lateinit var profilePresenter: ProfilePresenter
 
     val MIME_TEXT_PLAIN = "text/plain"
@@ -78,11 +78,8 @@ class MainActivity : AppCompatActivity() {
         outState.putParcelableArrayList("LIST", ArrayList(produks))
     }
 
-    private fun init() {
 
-        profilePresenter = ProfilePresenter(profileView = null)
-        nfcPresenter = NFCPresenter()
-
+    private fun getUser(){
         profilePresenter.getProfile(CurrentUser.id.toString(), object : ProfileView {
             override fun onLoading() {
                 dialogView.showProgressDialog()
@@ -97,6 +94,7 @@ class MainActivity : AppCompatActivity() {
                 CurrentUser.email = respon.email
                 CurrentUser.nama = respon.nama
                 txt_nama_user.text = respon.nama
+                CurrentUser.uid = respon.uid
             }
 
             override fun error(pesan: String?) {
@@ -104,7 +102,15 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+    }
 
+    private fun init() {
+
+        profilePresenter = ProfilePresenter(profileView = null)
+        productNfcPresenter = ProductNFCPresenter()
+
+
+        getUser()
 
         rcy_product.layoutManager = LinearLayoutManager(this)
         rcy_product.itemAnimator = DefaultItemAnimator()
@@ -186,13 +192,14 @@ class MainActivity : AppCompatActivity() {
 
         var produk: ProductModel
 
-        nfcPresenter.retriveProduct(product, object : NFCView {
+        productNfcPresenter.retriveProduct(product, object : ProductNFCView {
             override fun onLoading() {
                 dialogView.showProgressDialog()
             }
 
             override fun onFinish() {
                 dialogView.hideProgressDialog()
+                productNfcPresenter.viewOnDestroy()
             }
 
             override fun getResponses(respon: ProductModel?) {
@@ -375,6 +382,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
+    override fun onRestart() {
+        super.onRestart()
+        getUser()
+    }
+
     override fun onResume() {
         super.onResume()
         mNfcAdapter?.let { setupForegroundDispatch(this, it) }
@@ -382,12 +394,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onPause() {
         mNfcAdapter?.let { stopForegroundDispatch(this, it) }
-        nfcPresenter.viewOnDestroy()
+        productNfcPresenter.viewOnDestroy()
         super.onPause()
     }
 
     override fun onDestroy() {
-        nfcPresenter.viewOnDestroy()
+        productNfcPresenter.viewOnDestroy()
         super.onDestroy()
     }
 

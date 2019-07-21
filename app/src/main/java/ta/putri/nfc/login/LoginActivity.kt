@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
+import ta.putri.nfc.AboutActivity
 import ta.putri.nfc.customer.MainActivity
 import ta.putri.nfc.R
 import ta.putri.nfc.model.CurrentUser
@@ -48,6 +49,10 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
         btn_daftar.setOnClickListener {
             startActivity(intentFor<RegisterActivity>())
+        }
+
+        btn_aboutUs.setOnClickListener {
+            startActivity(intentFor<AboutActivity>())
         }
 
         handleLogin()

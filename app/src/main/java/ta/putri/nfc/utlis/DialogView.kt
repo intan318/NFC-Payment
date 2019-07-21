@@ -15,7 +15,7 @@ import ta.putri.nfc.R
 
 class DialogView(private var activity: Activity) {
 
-    private lateinit var dialog: Dialog
+      private lateinit var dialog: Dialog
     var status: Boolean = false
 
     fun showProgressDialog() {

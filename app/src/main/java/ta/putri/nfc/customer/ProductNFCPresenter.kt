@@ -6,16 +6,16 @@ import org.jetbrains.anko.uiThread
 import ta.putri.nfc.repository.ApiFactory
 import java.lang.NullPointerException
 
-class NFCPresenter {
+class ProductNFCPresenter {
 
-    private var nfcView : NFCView? = null
+    private var productNfcView : ProductNFCView? = null
 
     private val service = ApiFactory.makeRetrofitService()
     var job: Job? = null
 
-    fun retriveProduct(code : String, nfcView: NFCView?){
-        this.nfcView = nfcView
-        nfcView?.onLoading()
+    fun retriveProduct(code : String, productNfcView: ProductNFCView?){
+        this.productNfcView = productNfcView
+        productNfcView?.onLoading()
         doAsync {
             runBlocking {
                 job = launch(Dispatchers.IO) {
@@ -23,12 +23,12 @@ class NFCPresenter {
                         val data = service.getProductAsync(code)
                         val result = data.await()
                         uiThread {
-                            nfcView?.getResponses(result.body())
-                            nfcView?.onFinish()
+                            productNfcView?.getResponses(result.body())
+                            productNfcView?.onFinish()
                         }
                     } catch (e: NullPointerException) {
-                        nfcView?.error(e.toString())
-                        nfcView?.onFinish()
+                        productNfcView?.error(e.toString())
+                        productNfcView?.onFinish()
                     }
                 }
             }
@@ -37,6 +37,6 @@ class NFCPresenter {
 
     fun viewOnDestroy() {
         job?.cancel()
-        nfcView = null
+        productNfcView = null
     }
 }

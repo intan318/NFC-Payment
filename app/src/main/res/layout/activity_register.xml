@@ -73,6 +73,29 @@
 
                 <com.google.android.material.textfield.TextInputLayout
                         style="@style/LoginTextInputLayoutStyle"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/edt_uid"
+                            android:padding="15dp"
+                            android:hint="UID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_marginBottom="10dp"
+                        android:textSize="14sp"
+                        android:text="@string/data_uid_didapatkan_setelah_mendaftarkan_perangkat_anda"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+
+                <com.google.android.material.textfield.TextInputLayout
+                        style="@style/LoginTextInputLayoutStyle"
                         app:passwordToggleEnabled="true"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
@@ -89,6 +112,7 @@
                 </com.google.android.material.textfield.TextInputLayout>
 
                 <com.google.android.material.textfield.TextInputLayout
+                        android:inputType="textPassword"
                         style="@style/LoginTextInputLayoutStyle"
                         android:layout_marginTop="10dp"
                         android:layout_marginBottom="10dp"
