@@ -1,4 +1,4 @@
-package ta.putri.nfc.customer.profile
+package ta.putri.nfc.profile
 
 
 import android.view.LayoutInflater
@@ -13,7 +13,8 @@ import ta.putri.nfc.R
 import ta.putri.nfc.model.TransactionModel
 
 class TransactionAdapter(
-    private val transactions: MutableList<TransactionModel>
+    private val transactions: MutableList<TransactionModel>,
+    private val listener : (TransactionModel) -> Unit
 ) :
     RecyclerView.Adapter<TransactionAdapter.ViewHolder>() {
 
@@ -26,7 +27,7 @@ class TransactionAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding(transactions[position], position)
+        holder.binding(transactions[position], position, listener)
     }
 
 
@@ -34,7 +35,8 @@ class TransactionAdapter(
 
         fun binding(
             transaksi: TransactionModel,
-            position: Int
+            position: Int,
+            listener: (TransactionModel) -> Unit
         ) {
 
             view.txt_namaBarang.text = transaksi.produk
@@ -43,7 +45,9 @@ class TransactionAdapter(
             view.txt_tanggal.text = transaksi.tanggal
             view.txt_total.text = transaksi.totalHarga
 
-
+            view.btn_delete_transaction.setOnClickListener{
+                listener(transaksi)
+            }
         }
     }
 }

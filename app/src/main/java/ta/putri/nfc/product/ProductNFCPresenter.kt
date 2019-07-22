@@ -1,4 +1,4 @@
-package ta.putri.nfc.customer
+package ta.putri.nfc.product
 
 import kotlinx.coroutines.*
 import org.jetbrains.anko.doAsync

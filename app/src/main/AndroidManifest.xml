@@ -24,9 +24,9 @@
             tools:targetApi="m">
         <activity android:name=".AboutActivity">
         </activity>
-        <activity android:name=".customer.profile.ProfileActivity">
+        <activity android:name="ta.putri.nfc.profile.ProfileActivity">
         </activity>
-        <activity android:name=".customer.checkout.CheckoutActivity">
+        <activity android:name="ta.putri.nfc.checkout.CheckoutActivity">
         </activity>
         <activity android:name=".register.RegisterActivity">
         </activity>
@@ -37,7 +37,7 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".customer.MainActivity">
+        <activity android:name="ta.putri.nfc.product.ProductBasketActivity">
             <intent-filter>
                 <action android:name="android.nfc.action.TECH_DISCOVERED"/>
             </intent-filter>

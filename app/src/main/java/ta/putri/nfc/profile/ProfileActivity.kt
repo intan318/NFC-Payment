@@ -1,4 +1,4 @@
-package ta.putri.nfc.customer.profile
+package ta.putri.nfc.profile
 
 import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +10,16 @@ import kotlinx.android.synthetic.main.activity_profile.*
 import org.jetbrains.anko.*
 import ta.putri.nfc.R
 import ta.putri.nfc.login.LoginActivity
+import ta.putri.nfc.model.APIResponses
 import ta.putri.nfc.model.CurrentUser
 import ta.putri.nfc.model.CustomerModel
 import ta.putri.nfc.model.TransactionModel
+import ta.putri.nfc.utlis.ButtonEventConfirmationEditDialogListener
 import ta.putri.nfc.utlis.DialogView
 import ta.putri.nfc.utlis.SessionManager
 
 class ProfileActivity : AppCompatActivity(), ProfileView {
+
 
     private lateinit var customerModel: CustomerModel
     private var transactions: MutableList<TransactionModel> = mutableListOf()
@@ -38,7 +41,22 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
         profilePresenter = ProfilePresenter(this)
         dialogView = DialogView(this)
         sessionManager = SessionManager(this)
-        transactionAdapter = TransactionAdapter(transactions)
+
+
+        transactionAdapter = TransactionAdapter(transactions) { transaksi ->
+
+            dialogAlert =
+                alert(
+                    message = "Anda yakin mau menghapus data transaksi ini?",
+                    title = "Hapus Transaksi"
+                ) {
+                    okButton {
+                        profilePresenter.deleteTransaction(transaksi.id.toString(), this@ProfileActivity)
+                    }
+                    cancelButton { dialogAlert.dismiss() }
+                }.show()
+
+        }
         lastActivityAdapter = LastActivityAdapter(CurrentUser.listProduk)
 
 
@@ -54,6 +72,21 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
         btn_back.setOnClickListener {
             onBackPressed()
         }
+
+        edt_nama_customer.setOnClickListener {
+            dialogView.showDialogEditNama(
+                customerModel.nama.toString(),
+                object : ButtonEventConfirmationEditDialogListener {
+                    override fun onClickYa(nama: String) {
+                        profilePresenter.editNama(nama, customerModel.id.toString(), this@ProfileActivity)
+                    }
+
+                    override fun onClickTidak() {
+                        toast("Batal mengubah nama")
+                    }
+                })
+        }
+
 
         btn_logout.setOnClickListener {
             dialogAlert =
@@ -104,7 +137,6 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
             txt_saldoawal.text = CurrentUser.saldo
             txt_saldoakhir.text = intent.getStringExtra("saldoAkhir")
             txt_tanggal.text = intent.getStringExtra("tanggal")
-            txt_status.text = currentStatus
 
         } else {
             card_lastActivity_span.visibility = View.GONE
@@ -145,11 +177,20 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
 
     }
 
+    override fun getChangeNameResponse(respon: APIResponses?) {
+        if (!respon?.error!!) {
+            toast("Nama berhasil di ubah")
+            finish()
+            startActivity(intent)
+        } else {
+            toast("Nama gagal di ubah")
+        }
+    }
+
     override fun error(pesan: String?) {
 
         toast(pesan.toString())
     }
-
 
     override fun onDestroy() {
         profilePresenter.viewOnDestroy()

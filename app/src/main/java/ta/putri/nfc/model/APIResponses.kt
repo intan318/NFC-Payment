@@ -2,7 +2,7 @@ package ta.putri.nfc.model
 
 import com.google.gson.annotations.SerializedName
 
-class PostResponses {
+class APIResponses {
 
     @SerializedName("error")
     val error : Boolean? = null

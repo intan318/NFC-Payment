@@ -1,6 +1,6 @@
 @file:Suppress("DEPRECATION")
 
-package ta.putri.nfc.customer
+package ta.putri.nfc.product
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -23,14 +23,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.*
 import ta.putri.nfc.R
-import ta.putri.nfc.customer.checkout.CheckoutActivity
-import ta.putri.nfc.customer.profile.ProfileActivity
-import ta.putri.nfc.customer.profile.ProfilePresenter
-import ta.putri.nfc.customer.profile.ProfileView
-import ta.putri.nfc.model.CurrentUser
-import ta.putri.nfc.model.CustomerModel
-import ta.putri.nfc.model.ProductModel
-import ta.putri.nfc.model.TransactionModel
+import ta.putri.nfc.checkout.CheckoutActivity
+import ta.putri.nfc.model.*
+import ta.putri.nfc.profile.ProfileActivity
+import ta.putri.nfc.profile.ProfilePresenter
+import ta.putri.nfc.profile.ProfileView
 import ta.putri.nfc.utlis.ButtonEventConfirmationDialogListener
 import ta.putri.nfc.utlis.DialogView
 import ta.putri.nfc.utlis.SessionManager
@@ -39,7 +36,7 @@ import java.util.*
 import kotlin.experimental.and
 
 
-class MainActivity : AppCompatActivity() {
+class ProductBasketActivity : AppCompatActivity() {
 
     private lateinit var dialogView: DialogView
     private var mNfcAdapter: NfcAdapter? = null
@@ -66,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         CurrentUser.id = sessionManager.getID()
 
         if (savedInstanceState != null) {
-            produks = savedInstanceState.getParcelableArrayList("LIST")
+            produks = intent.getParcelableArrayListExtra("LIST")
         }
 
         init()
@@ -79,8 +76,12 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getUser(){
+    private fun getUser() {
         profilePresenter.getProfile(CurrentUser.id.toString(), object : ProfileView {
+
+            override fun getChangeNameResponse(respon: APIResponses?) {
+
+            }
             override fun onLoading() {
                 dialogView.showProgressDialog()
             }
@@ -220,24 +221,25 @@ class MainActivity : AppCompatActivity() {
                     dialogView.showAddProductDialog(
                         produk.nama.toString(),
                         produk.harga.toString(),
-                       "1",
+                        "1",
                         produk.stock.toString(),
                         object : ButtonEventConfirmationDialogListener {
                             override fun onClickYa(jumlah: Int) {
                                 if (jumlah > 0) {
-                                    produk.jumlah = jumlah.toString()
+                                    if (jumlah > produk.stock!!.toInt()) {
+                                        longToast("Jumlah pemesanan barang melebihi stock yang ada, pemesanan tidak terpenuhi")
+                                    } else {
+                                        produk.jumlah = jumlah.toString()
 
-                                    val subTotal = when {
-                                        produk.jumlah == null || produk.harga == null -> 0
-                                        else -> produk.harga!!.toInt() * jumlah
+                                        val subTotal = if (produk.jumlah == null || produk.harga == null) 0
+                                        else produk.harga!!.toInt() * jumlah
+
+                                        produks.add(produk)
+                                        subTotals.add(subTotal)
+                                        productAdapter.notifyDataSetChanged()
+
+                                        controlUI()
                                     }
-
-                                    Log.e("JUMLAH", produk.jumlah)
-                                    produks.add(produk)
-                                    subTotals.add(subTotal)
-                                    productAdapter.notifyDataSetChanged()
-
-                                    controlUI()
                                 } else {
                                     longToast("Barang batal di pesan")
                                 }
@@ -256,6 +258,34 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+
+    }
+
+
+    override fun onRestart() {
+        super.onRestart()
+        getUser()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        mNfcAdapter?.let { setupForegroundDispatch(this, it) }
+    }
+
+    override fun onPause() {
+        mNfcAdapter?.let { stopForegroundDispatch(this, it) }
+        productNfcPresenter.viewOnDestroy()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        productNfcPresenter.viewOnDestroy()
+        super.onDestroy()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        handleIntent(intent!!)
 
     }
 
@@ -379,33 +409,6 @@ class MainActivity : AppCompatActivity() {
                 showAddProduct(result)
             }
         }
-
-    }
-
-    override fun onRestart() {
-        super.onRestart()
-        getUser()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        mNfcAdapter?.let { setupForegroundDispatch(this, it) }
-    }
-
-    override fun onPause() {
-        mNfcAdapter?.let { stopForegroundDispatch(this, it) }
-        productNfcPresenter.viewOnDestroy()
-        super.onPause()
-    }
-
-    override fun onDestroy() {
-        productNfcPresenter.viewOnDestroy()
-        super.onDestroy()
-    }
-
-    override fun onNewIntent(intent: Intent?) {
-        super.onNewIntent(intent)
-        handleIntent(intent!!)
 
     }
 

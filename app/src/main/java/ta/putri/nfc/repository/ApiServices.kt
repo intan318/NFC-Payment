@@ -16,6 +16,10 @@ interface ApiServices {
     @GET("customer/{id}")
     fun getCustomerAsync(@Path("id") id: String): Deferred<Response<CustomerModel?>>
 
+    @Headers("Accept: application/json")
+    @GET("transaksi/customer/{id}")
+    fun getTrnsaksiCustomer(@Path("id") id: String): Deferred<Response<List<TransactionModel>?>>
+
     @FormUrlEncoded
     @Headers("Accept: application/json")
     @POST("customer/login")
@@ -33,7 +37,7 @@ interface ApiServices {
         @Field("password") password: String?,
         @Field("saldo") saldo : String?,
         @Field("uid") uid : String?
-    ): Deferred<Response<PostResponses>>
+    ): Deferred<Response<APIResponses>>
 
 
     @FormUrlEncoded
@@ -49,7 +53,7 @@ interface ApiServices {
         @Field("saldo_awal") saldow_awal : String?,
         @Field("saldo_akhir") saldo_akhir : String?,
         @Field("status") status : String
-    ): Deferred<Response<PostResponses>>
+    ): Deferred<Response<APIResponses>>
 
     //updated when transaksi
     @FormUrlEncoded
@@ -59,7 +63,7 @@ interface ApiServices {
         @Field("customer_id") customer_id: String,
         @Field("produk_id") produk_id: String,
         @Field("jumlah") jumlah: String
-    ): Deferred<Response<PostResponses?>>
+    ): Deferred<Response<APIResponses?>>
 
     @FormUrlEncoded
     @Headers("Accept: application/json")
@@ -70,17 +74,21 @@ interface ApiServices {
         @Field("saldo_akhir") saldo_akhir: String,
         @Field("total_harga") pengurangan : String,
         @Field("status") status : String
-    ): Deferred<Response<PostResponses?>>
+    ): Deferred<Response<APIResponses?>>
 
 
+    @FormUrlEncoded
     @Headers("Accept: application/json")
-    @GET("transaksi/customer/{id}")
-    fun getTrnsaksiCustomer(@Path("id") id: String): Deferred<Response<List<TransactionModel>?>>
+    @PUT("customer/{id}")
+    fun changeNameCustomer(
+        @Field("nama") nama: String?,
+        @Path("id") id: String
+    ): Deferred<Response<APIResponses>>
 
-
-
-
-
-
+    @DELETE("transaksi/{id}")
+    @Headers("Accept: application/json")
+    fun deleteTransaction(
+        @Path("id") id: String?
+    ): Deferred<Response<APIResponses>>
 
 }

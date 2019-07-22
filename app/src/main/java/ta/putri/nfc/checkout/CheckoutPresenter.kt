@@ -1,11 +1,10 @@
-package ta.putri.nfc.customer.checkout
+package ta.putri.nfc.checkout
 
 import android.content.Context
 import kotlinx.coroutines.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
-import ta.putri.nfc.model.CurrentUser
-import ta.putri.nfc.model.PostResponses
+import ta.putri.nfc.model.APIResponses
 import ta.putri.nfc.model.ProductModel
 import ta.putri.nfc.repository.ApiFactory
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -36,7 +35,7 @@ class CheckoutPresenter(private var checkoutView: CheckoutView?, private val con
         }
 
         doAsync {
-            val lstOfReturnData = ConcurrentLinkedQueue<PostResponses>()
+            val lstOfReturnData = ConcurrentLinkedQueue<APIResponses>()
             val idProduks = produks.map { it.nama }.joinToString(",")
             val jumlahPerProduk = produks.map { it.jumlah }.joinToString(",")
             try {

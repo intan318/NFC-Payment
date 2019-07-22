@@ -37,9 +37,9 @@ class LoginPresenter(val context: Context, val view: LoginView) {
                         }
                     }
 
-                } catch (e: SQLiteException) {
+                } catch (e: Exception) {
                     uiThread {
-                        context.toast(e.localizedMessage)
+                        context.toast(e.message.toString())
                         view.onFinish()
                     }
                 }

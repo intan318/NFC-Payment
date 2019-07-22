@@ -1,4 +1,5 @@
-package ta.putri.nfc.customer.profile
+package ta.putri.nfc.checkout
+
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
@@ -9,10 +10,10 @@ import kotlinx.android.synthetic.main.item_produk_transaksi.view.*
 import ta.putri.nfc.R
 import ta.putri.nfc.model.ProductModel
 
-class LastActivityAdapter(
+class CheckoutProductAdapter(
     private val produks: MutableList<ProductModel>
 ) :
-    RecyclerView.Adapter<LastActivityAdapter.ViewHolder>() {
+    RecyclerView.Adapter<CheckoutProductAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_produk_transaksi, parent, false))

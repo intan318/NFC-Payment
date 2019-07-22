@@ -7,7 +7,7 @@ import android.util.Log
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.*
 import ta.putri.nfc.AboutActivity
-import ta.putri.nfc.customer.MainActivity
+import ta.putri.nfc.product.ProductBasketActivity
 import ta.putri.nfc.R
 import ta.putri.nfc.model.CurrentUser
 import ta.putri.nfc.model.LoginRespons
@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
                 CurrentUser.id = session.getID()
                 startActivity(
-                    intentFor<MainActivity>()
+                    intentFor<ProductBasketActivity>()
                 )
                 finish()
             }
@@ -77,7 +77,7 @@ class LoginActivity : AppCompatActivity(), LoginView {
 
     private fun onLogin(){
         session.setLogin(true, user_id)
-        startActivity(intentFor<MainActivity>())
+        startActivity(intentFor<ProductBasketActivity>())
     }
 
     override fun onLoading() {

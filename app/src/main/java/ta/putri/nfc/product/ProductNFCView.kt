@@ -1,4 +1,4 @@
-package ta.putri.nfc.customer
+package ta.putri.nfc.product
 
 import ta.putri.nfc.model.ProductModel
 

@@ -6,6 +6,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class TransactionModel(
+    @SerializedName("id")
+    var id: String? = null,
     @SerializedName("customer")
     var customer: String? = null, // Naufal Mahfudz I
     @SerializedName("jumlah_per_produk")
@@ -25,9 +27,12 @@ data class TransactionModel(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     )
+
     override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
         parcel.writeString(customer)
         parcel.writeString(jumlahPerProduk)
         parcel.writeString(produk)
@@ -49,4 +54,5 @@ data class TransactionModel(
             return arrayOfNulls(size)
         }
     }
+
 }

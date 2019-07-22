@@ -1,6 +1,6 @@
-package ta.putri.nfc.customer.checkout
+package ta.putri.nfc.checkout
 
-import ta.putri.nfc.model.PostResponses
+import ta.putri.nfc.model.APIResponses
 import java.util.concurrent.ConcurrentLinkedQueue
 
 interface CheckoutView {
@@ -8,6 +8,6 @@ interface CheckoutView {
 
     fun onLoading()
     fun onFinish()
-    fun getResponses(respon: ConcurrentLinkedQueue<PostResponses>)
+    fun getResponses(respon: ConcurrentLinkedQueue<APIResponses>)
     fun error(pesan : String?)
 }

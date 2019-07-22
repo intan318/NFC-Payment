@@ -1,24 +1,21 @@
-package ta.putri.nfc.customer
+package ta.putri.nfc.profile
 
-
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.card_product.view.*
+import kotlinx.android.synthetic.main.item_produk_transaksi.view.*
 import ta.putri.nfc.R
 import ta.putri.nfc.model.ProductModel
 
-class ProductAdapter(
-    private val produks: MutableList<ProductModel>,
-    private val subTotals : MutableList<Int>,
-    private val editListener: (Int) -> Unit,
-    private val deleteListener: (Int) -> Unit
-) : RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
-
+class LastActivityAdapter(
+    private val produks: MutableList<ProductModel>
+) :
+    RecyclerView.Adapter<LastActivityAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.card_product, parent, false))
+        return ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_produk_transaksi, parent, false))
     }
 
     override fun getItemCount(): Int {
@@ -26,7 +23,7 @@ class ProductAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.binding(produks[position], position,subTotals[position], editListener, deleteListener)
+        holder.binding(produks[position])
     }
 
     /*fun removeAt(position: Int) {
@@ -47,27 +44,21 @@ class ProductAdapter(
 
     inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
+        @SuppressLint("SetTextI18n")
         fun binding(
-            product: ProductModel,
-            position: Int,
-            subTotals: Int,
-            editListener: (Int) -> Unit,
-            deleteListener: (Int) -> Unit
+            product: ProductModel
         ) {
 
             view.txt_namaBarang.text = product.nama
-            view.txt_hargaBarang.text = product.harga
+            view.txt_harga.text = "Rp.${product.harga}"
             view.txt_jumlahBarang.text = product.jumlah
 
             if (product.harga == null || product.jumlah == null) {
                 view.txt_subtotal.text = 0.toString()
             } else {
-                view.txt_subtotal.text = subTotals.toString()
+                view.txt_subtotal.text = (product.harga!!.trim().toInt() * product.jumlah!!.trim().toInt()).toString()
             }
 
-
-            view.btn_delete.setOnClickListener { deleteListener(position) }
-            view.btn_edit.setOnClickListener { editListener(position) }
 
         }
     }

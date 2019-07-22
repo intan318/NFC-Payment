@@ -36,7 +36,14 @@
                     android:layout_below="@id/txt_namaBarangText"
                     android:id="@+id/txt_namaBarang"
                     android:textSize="15sp"
-                    android:layout_marginStart="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <ImageButton
+                    android:id="@+id/btn_delete_transaction"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_delete"
+                    android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -60,7 +67,6 @@
             <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/txt_jumlahBarang"
                     android:textSize="15sp"
-                    android:layout_marginStart="16dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -83,7 +89,6 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_marginStart="16dp"
                     android:id="@+id/txt_hargaBarang"
                     android:textSize="15sp"
                     android:layout_width="wrap_content"
@@ -107,7 +112,6 @@
                     android:layout_height="wrap_content"/>
 
             <androidx.appcompat.widget.AppCompatTextView
-                    android:layout_marginStart="16dp"
                     android:id="@+id/txt_tanggal"
                     android:textSize="15sp"
                     android:layout_width="wrap_content"

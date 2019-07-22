@@ -1,26 +1,19 @@
-package ta.putri.nfc.customer.checkout
+package ta.putri.nfc.checkout
 
 import android.annotation.SuppressLint
-import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_checkout.*
 import org.jetbrains.anko.*
 import ta.putri.nfc.R
-import ta.putri.nfc.customer.profile.ProfileActivity
+import ta.putri.nfc.profile.ProfileActivity
 import ta.putri.nfc.model.CurrentUser
-import ta.putri.nfc.model.PostResponses
+import ta.putri.nfc.model.APIResponses
 import ta.putri.nfc.model.ProductModel
-import ta.putri.nfc.utlis.ButtonEventPaymentDialog
 import ta.putri.nfc.utlis.DialogView
 import java.text.SimpleDateFormat
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -147,7 +140,7 @@ class CheckoutActivity : AppCompatActivity(), CheckoutView {
     }
 
     @SuppressLint("SimpleDateFormat")
-    override fun getResponses(respon: ConcurrentLinkedQueue<PostResponses>) {
+    override fun getResponses(respon: ConcurrentLinkedQueue<APIResponses>) {
 
         val sdf = SimpleDateFormat("dd/M/yyyy hh:mm:ss")
         val currentDate = sdf.format(Date())
