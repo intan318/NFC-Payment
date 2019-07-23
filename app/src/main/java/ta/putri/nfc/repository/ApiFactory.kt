@@ -10,21 +10,10 @@ import java.util.concurrent.TimeUnit
 object ApiFactory {
 
     private const val BASE_URL: String = "http://toko.sharkhomedesign.com/api/"
-    private const val BASE_WEATHER_URL = "http://openweathermap.org/data/2.5/"
 
     fun makeRetrofitService(): ApiServices {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .client(makeOkHttpClient())
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(CoroutineCallAdapterFactory())
-            .build().create(ApiServices::class.java)
-    }
-
-    fun makeWeatherService(): ApiServices {
-
-        return Retrofit.Builder()
-            .baseUrl(BASE_WEATHER_URL)
             .client(makeOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(CoroutineCallAdapterFactory())

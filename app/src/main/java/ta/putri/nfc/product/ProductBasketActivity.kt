@@ -20,7 +20,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_product_basket.*
 import org.jetbrains.anko.*
 import ta.putri.nfc.R
 import ta.putri.nfc.checkout.CheckoutActivity
@@ -55,7 +55,7 @@ class ProductBasketActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_product_basket)
         dialogView = DialogView(this)
         mNfcAdapter = NfcAdapter.getDefaultAdapter(this)
         vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -189,7 +189,6 @@ class ProductBasketActivity : AppCompatActivity() {
 
     @SuppressLint("SetTextI18n")
     fun showAddProduct(product: String) {
-
 
         var produk: ProductModel
 

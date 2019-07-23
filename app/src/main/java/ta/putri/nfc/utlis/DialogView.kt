@@ -10,7 +10,6 @@ import kotlinx.android.synthetic.main.add_product_layout.view.*
 import kotlinx.android.synthetic.main.add_product_layout.view.btn_cancel
 import kotlinx.android.synthetic.main.add_product_layout.view.jumlah_barang
 import kotlinx.android.synthetic.main.add_product_layout.view.nama_barang
-import kotlinx.android.synthetic.main.dialog_payment_layout.view.*
 import kotlinx.android.synthetic.main.popup_edt_nama.view.*
 import ta.putri.nfc.R
 
@@ -88,29 +87,6 @@ class DialogView(private var activity: Activity) {
         addProductDialog.show()
     }
 
-    /*fun showDialogOnPayment(totalHarga : String, saldoCustomer : String, saldoAkhir : String, event: ButtonEventPaymentDialog){
-
-        val factory = LayoutInflater.from(activity)
-        val paymentDialogView = factory.inflate(R.layout.dialog_payment_layout, null)
-        val paymentDialog = AlertDialog.Builder(activity).create()
-
-        paymentDialogView.txt_old_saldo.text = saldoCustomer
-        paymentDialogView.txt_new_saldo.text = saldoAkhir
-        paymentDialogView.txt_total_harga.text = totalHarga
-
-        paymentDialogView.btn_paid.setOnClickListener {
-            event.onClickYa()
-            paymentDialog.dismiss()
-        }
-
-        paymentDialogView.btn_cancel.setOnClickListener {
-            event.onClickTidak()
-            paymentDialog.dismiss()
-        }
-
-        paymentDialog.setView(paymentDialogView)
-        paymentDialog.show()
-    }*/
 
     fun showDialogEditNama(namaLama : String, event: ButtonEventConfirmationEditDialogListener){
 

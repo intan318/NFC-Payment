@@ -96,8 +96,9 @@ class ProfileActivity : AppCompatActivity(), ProfileView {
                 ) {
                     okButton {
                         sessionManager.setLogin(false, "")
-                        startActivity(intentFor<LoginActivity>())
                         finish()
+                        startActivity(intentFor<LoginActivity>())
+
                     }
                     cancelButton { dialogAlert.dismiss() }
                 }.show()
