@@ -67,6 +67,7 @@ class ProductBasketActivity : AppCompatActivity() {
         }
 
         init()
+        //showAddProduct("10023")
     }
 
 
@@ -79,16 +80,9 @@ class ProductBasketActivity : AppCompatActivity() {
     private fun getUser() {
         profilePresenter.getProfile(CurrentUser.id.toString(), object : ProfileView {
 
-            override fun getChangeNameResponse(respon: APIResponses?) {
-
-            }
-            override fun onLoading() {
-                dialogView.showProgressDialog()
-            }
-
-            override fun onFinish() {
-                dialogView.hideProgressDialog()
-            }
+            override fun getChangeNameResponse(respon: APIResponses?) {}
+            override fun onLoading() {}
+            override fun onFinish() {}
 
             override fun getResponses(respon: CustomerModel?, transaksi: List<TransactionModel>?) {
                 CurrentUser.saldo = respon!!.saldo
@@ -226,8 +220,9 @@ class ProductBasketActivity : AppCompatActivity() {
                             override fun onClickYa(jumlah: Int) {
                                 if (jumlah > 0) {
                                     if (jumlah > produk.stock!!.toInt()) {
-                                        longToast("Jumlah pemesanan barang melebihi stock yang ada, pemesanan tidak terpenuhi")
-                                    } else {
+                                        toast("Jumlah pemesanan barang melebihi stock yang ada, pemesanan tidak terpenuhi")
+                                    }
+                                    else {
                                         produk.jumlah = jumlah.toString()
 
                                         val subTotal = if (produk.jumlah == null || produk.harga == null) 0
@@ -263,7 +258,7 @@ class ProductBasketActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
-        getUser()
+       getUser()
     }
 
     override fun onResume() {
@@ -289,7 +284,7 @@ class ProductBasketActivity : AppCompatActivity() {
     }
 
 
-    //////////////////   NFC CONTROLLER ///////////////////////////
+//////////////////   NFC CONTROLLER ///////////////////////////
 
     private fun handleIntent(intent: Intent) {
         val action = intent.action
@@ -408,7 +403,6 @@ class ProductBasketActivity : AppCompatActivity() {
                 showAddProduct(result)
             }
         }
-
     }
 
 }

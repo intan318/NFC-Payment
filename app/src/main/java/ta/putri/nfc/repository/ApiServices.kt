@@ -70,6 +70,7 @@ interface ApiServices {
     @POST("histori")
     fun insertHistory(
         @Field("uid") uid : String,
+        @Field("nama_customer") nama : String,
         @Field("saldo_awal") saldo_awal: String,
         @Field("saldo_akhir") saldo_akhir: String,
         @Field("total_harga") pengurangan : String,

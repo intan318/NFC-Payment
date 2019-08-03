@@ -5,6 +5,7 @@ import kotlinx.coroutines.*
 import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import ta.putri.nfc.model.APIResponses
+import ta.putri.nfc.model.CurrentUser
 import ta.putri.nfc.model.ProductModel
 import ta.putri.nfc.repository.ApiFactory
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -75,6 +76,7 @@ class CheckoutPresenter(private var checkoutView: CheckoutView?, private val con
 
                             val history = service.insertHistory(
                                 kode_device,
+                                CurrentUser.nama.toString(),
                                 saldoAwal,
                                 saldoAkhir,
                                 totalHarga,
@@ -94,6 +96,7 @@ class CheckoutPresenter(private var checkoutView: CheckoutView?, private val con
 
                             val history = service.insertHistory(
                                 kode_device,
+                                CurrentUser.nama.toString(),
                                 saldoAwal,
                                 saldoAkhir,
                                 totalHarga,
